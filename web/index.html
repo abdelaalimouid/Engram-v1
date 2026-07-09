@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engram — a memory that forgets on purpose</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<div class="grain"></div>
+
+<header>
+  <div class="brand">
+    <div class="pulse-ring"><span></span></div>
+    <h1>Engram</h1>
+    <p class="tagline">a memory that forgets <em>on purpose</em></p>
+  </div>
+  <div class="header-stats" id="header-stats">
+    <div class="stat"><label>beliefs</label><b id="stat-beliefs">–</b></div>
+    <div class="stat"><label>episodes</label><b id="stat-episodes">–</b></div>
+    <div class="stat"><label>archived</label><b id="stat-archived">–</b></div>
+    <div class="stat clock"><label>simulated clock</label><b id="stat-clock">+0h</b></div>
+  </div>
+  <div class="controls">
+    <button id="btn-warp-week" class="ctl" title="Advance the simulated clock 7 days">⏩ +7 days</button>
+    <button id="btn-warp-month" class="ctl" title="Advance the simulated clock 30 days">⏩ +30 days</button>
+    <button id="btn-sleep" class="ctl sleep" title="Run a consolidation sleep cycle">☾ sleep cycle</button>
+  </div>
+</header>
+
+<main>
+  <section class="chat-pane">
+    <div class="session-row">
+      <label for="session">session</label>
+      <input id="session" value="session-1" spellcheck="false" />
+      <button id="btn-new-session" class="ctl small">new session ↻</button>
+    </div>
+    <div id="chat-log" class="chat-log">
+      <div class="msg system-note">
+        Speak to Engram across sessions. Facts you share become <b>beliefs</b>; the
+        conversation itself becomes <b>episodes</b> that fade unless recalled. Fast-forward
+        time to watch memory decay, then run a sleep cycle to consolidate the gist.
+      </div>
+    </div>
+    <form id="chat-form" class="chat-form">
+      <textarea id="chat-input" rows="2" placeholder="Tell Engram something worth remembering…" autofocus></textarea>
+      <button type="submit" id="btn-send">recall<br/>&amp; reply</button>
+    </form>
+  </section>
+
+  <aside class="inspector">
+    <nav class="tabs">
+      <button data-tab="recall" class="tab active">Recall trace</button>
+      <button data-tab="beliefs" class="tab">Belief ledger</button>
+      <button data-tab="episodes" class="tab">Episodes</button>
+      <button data-tab="log" class="tab">Event log</button>
+    </nav>
+
+    <div id="tab-recall" class="tab-body active">
+      <div class="budget-row">
+        <span id="budget-label">memory budget</span>
+        <div class="budget-bar"><div id="budget-fill"></div></div>
+      </div>
+      <div id="recall-list" class="list">
+        <p class="empty">No recall yet — send a message.</p>
+      </div>
+    </div>
+
+    <div id="tab-beliefs" class="tab-body">
+      <div id="beliefs-list" class="list"><p class="empty">No beliefs learned yet.</p></div>
+    </div>
+
+    <div id="tab-episodes" class="tab-body">
+      <div id="episodes-list" class="list"><p class="empty">No episodes stored yet.</p></div>
+    </div>
+
+    <div id="tab-log" class="tab-body">
+      <div id="events-list" class="list"><p class="empty">Nothing logged yet.</p></div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <span>qwen3.7-plus · qwen-flash · text-embedding-v4 — running on Alibaba Cloud Model Studio (dashscope-intl)</span>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
