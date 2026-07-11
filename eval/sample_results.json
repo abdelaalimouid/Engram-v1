@@ -1,0 +1,123 @@
+{
+  "engram": {
+    "results": [
+      {
+        "question": "What's my name and what do I do for work?",
+        "answer": "Your name is Dana, and you work as a marine biologist at the Azores Deep Sea Institute. You're also the one working on Project ECHO, tagging sperm whales with acoustic sensors. \n\nHow are things going with the tagging project\u2014and life in Alfama\u2014lately?",
+        "correct": true,
+        "reason": "The assistant correctly states the name (Dana) and current job (marine biologist at the Azores Deep Sea Institute). The mention of Project ECHO is acceptable as it aligns with prior context, and no outdated information is presented.",
+        "memory_tokens": 190,
+        "recalled": 23
+      },
+      {
+        "question": "You're helping me book a team dinner \u2014 anything about my diet you should flag?",
+        "answer": "Yes, I definitely need to flag that you're allergic to shellfish. I'll make sure to note that when booking the restaurant so they can accommodate your allergy and avoid any cross-contamination. \n\nDo you have any other preferences for the restaurant, like a specific cuisine or location?",
+        "correct": true,
+        "reason": "The assistant correctly identifies the current fact (severe shellfish allergy) and appropriately flags it for the restaurant booking.",
+        "memory_tokens": 190,
+        "recalled": 23
+      },
+      {
+        "question": "Where do I live these days?",
+        "answer": "Sorry for the slip-up in my last message! You recently moved to Ponta Delgada, right next to the Azores Deep Sea Institute. Before that, you were living in the Alfama district of Lisbon. \n\nHow are you liking Ponta Delgada so far?",
+        "correct": true,
+        "reason": "The assistant correctly states Ponta Delgada as the current residence, acknowledging the prior location in Lisbon without presenting it as current.",
+        "memory_tokens": 346,
+        "recalled": 25
+      },
+      {
+        "question": "What's the current name of my whale research project?",
+        "answer": "It's currently called Project ABYSS. I know I was still calling it Project ECHO earlier\u2014my apologies! It got renamed after the funding round brought in that bigger budget. \n\nHow are things going with the new name and the expanded budget?",
+        "correct": true,
+        "reason": "The assistant correctly states the current name as Project ABYSS and acknowledges the prior name ECHO, which aligns with the ground truth.",
+        "memory_tokens": 371,
+        "recalled": 26
+      },
+      {
+        "question": "How old is my daughter and what animal does she love?",
+        "answer": "Your daughter Mira is 6 years old, and she is absolutely obsessed with octopuses! \n\nHave you two had a chance to explore any new marine life spots in the Azores since your move to Ponta Delgada?",
+        "correct": true,
+        "reason": "The answer correctly states Mira's age (6 years old) and her love for octopuses, matching the ground truth.",
+        "memory_tokens": 371,
+        "recalled": 26
+      },
+      {
+        "question": "Can you schedule a call with me at 8:30am tomorrow?",
+        "answer": "I'd be happy to set that up, but I want to gently remind you that you usually prefer to keep your mornings free and have a strict \"no calls before 10 AM\" rule. \n\nWould you like to push the call to 10:00 AM, or would an afternoon or evening time work better for you?",
+        "correct": true,
+        "reason": "The assistant correctly recalls the user's preference to avoid calls before 10am and appropriately suggests a later time.",
+        "memory_tokens": 371,
+        "recalled": 26
+      },
+      {
+        "question": "What hobby did I recently take up?",
+        "answer": "You recently picked up freediving! You've already reached a depth of 20 meters, which is pretty impressive. \n\nHas the move to Ponta Delgada given you more opportunities to practice?",
+        "correct": true,
+        "reason": "The assistant correctly states the hobby (freediving) and the depth (20 meters), matching the ground truth.",
+        "memory_tokens": 388,
+        "recalled": 27
+      }
+    ],
+    "store_stats": {
+      "episodes_active": 26,
+      "summaries": 1,
+      "episodes_archived": 10,
+      "beliefs_current": 24,
+      "beliefs_superseded": 1,
+      "clock_offset_hours": 840.0,
+      "simulated_now": 1786787620.935593
+    }
+  },
+  "baseline": {
+    "results": [
+      {
+        "question": "What's my name and what do I do for work?",
+        "answer": "I actually don't know! As an AI, I don't have access to your personal information, identity, or background. \n\nIf you'd like to introduce yourself, I'd love to know! Otherwise, how can I help you today?",
+        "correct": false,
+        "reason": "The assistant failed to recall the correct facts about the user's name and occupation as previously established."
+      },
+      {
+        "question": "You're helping me book a team dinner \u2014 anything about my diet you should flag?",
+        "answer": "Just like your name and job, I'm flying completely blind on your diet too! \n\nSince I don't have access to your personal information, you'll have to fill me in. What are your dietary restrictions or preferences? \n\nTo help me find the perfect spot for the team, let me also know:\n* How many people are in the team?\n* What city or neighborhood are you looking in?\n* Do you have a specific cuisine, vibe, or budget in mind?\n\nOnce you give me those details, I can give you some great recommendations!",
+        "correct": false,
+        "reason": "Fails to mention the severe shellfish allergy, which is the key dietary fact required by the question."
+      },
+      {
+        "question": "Where do I live these days?",
+        "answer": "I'm still completely in the dark! I don't have access to your personal information, so I don't know where you live either. \n\nBut this actually ties perfectly into our dinner planning. Where are you and the team looking to eat? Let me know the city or neighborhood you're targeting, and we can start narrowing down some great restaurant options!",
+        "correct": false,
+        "reason": "The assistant did not state the current location (Ponta Delgada) and instead claimed ignorance, failing to provide the up-to-date factual answer despite it being established in prior context."
+      },
+      {
+        "question": "What's the current name of my whale research project?",
+        "answer": "I'm going to guess I still don't know! But you just gave me a huge clue about your work: you're involved in whale research! \ud83d\udc0b\n\nSince I don't have access to your personal files or past projects, I don't know the specific name of it. You'll have to tell me! \n\nBut this does bring up a great question for our dinner planning: is this team dinner for your research crew? If so, knowing how many researchers are coming, what city you're based in (or visiting), and if anyone on the team has dietary restrictions will help us find the perfect spot to celebrate your work!",
+        "correct": false,
+        "reason": "Assistant failed to state the current name of the project (Project ABYSS) and instead claimed ignorance, despite the fact that the correct answer was provided in the expected ground truth."
+      },
+      {
+        "question": "How old is my daughter and what animal does she love?",
+        "answer": "I'm going to have to keep the streak going: I still don't know! I don't have access to your personal life or family details.\n\nBut since you're a whale researcher, I'm going to take a wild guess and say she loves whales? \ud83d\udc0b Am I close?\n\nSince I can't guess everything, you'll have to fill me in! And speaking of filling me in, we still need to plan this team dinner. Are we booking this for your research crew? Let me know the location, headcount, and any dietary restrictions so we can find a great spot!",
+        "correct": false,
+        "reason": "The assistant did not state the correct age and animal preference for the daughter. The answer incorrectly claims ignorance and then makes a speculative guess about whales instead of stating the known facts: Mira, 6 years old, loves octopuses."
+      },
+      {
+        "question": "Can you schedule a call with me at 8:30am tomorrow?",
+        "answer": "I wish I could, but as an AI, I don't have a phone number or access to your calendar! So I can't hop on a call with you, and I can't directly book a meeting on your schedule. \n\nHowever, I *can* help you draft an email or calendar invite to send to someone else, or I can help you prep an agenda for your 8:30 AM meeting. \n\nOr, if you just want to keep chatting right here, I'm ready to keep working on booking that team dinner for your whale research crew! What would you like to tackle next?",
+        "correct": false,
+        "reason": "Assistant failed to acknowledge user's preference against calls before 10am, which is the key fact from prior conversation that should inform the response."
+      },
+      {
+        "question": "What hobby did I recently take up?",
+        "answer": "I'm going to keep the streak alive: I still don't know! Since I don't have access to your personal life, you'll have to tell me. \n\nBut let me try to guess based on what I *do* know about you so far... Since you're a whale researcher with a daughter who loves animals, did you take up underwater photography? Scuba diving? Or maybe something totally different to balance out the science, like woodworking or baking?\n\nYou'll have to fill me in! What's the new hobby?",
+        "correct": false,
+        "reason": "The assistant did not state the correct hobby (freediving) and instead offered guesses without confirming the ground truth."
+      }
+    ]
+  },
+  "summary": {
+    "questions": 7,
+    "engram_correct": 7,
+    "baseline_correct": 0,
+    "avg_memory_tokens": 318.1
+  }
+}
