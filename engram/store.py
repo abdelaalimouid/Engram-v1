@@ -11,7 +11,7 @@ Two memory systems, mirroring the episodic/semantic split in biological memory:
             superseded. `valid_to IS NULL` means currently held. Every belief
             keeps provenance to the episode it was learned from.
 
-A `clock` with a persisted offset supports "timewarp" — advancing simulated
+A `clock` with a persisted offset supports "timewarp": advancing simulated
 time so forgetting and consolidation can be demonstrated live.
 """
 

@@ -1,4 +1,4 @@
-"""Qwen Cloud client — PROOF OF ALIBABA CLOUD DEPLOYMENT.
+"""Qwen Cloud client. PROOF OF ALIBABA CLOUD DEPLOYMENT.
 
 Every model call in Engram goes through this module, which targets the
 Alibaba Cloud Model Studio (DashScope) international endpoint:

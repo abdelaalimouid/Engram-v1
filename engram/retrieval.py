@@ -12,7 +12,7 @@ memory can still surface on a very strong semantic match (recognition beats
 free recall, as in humans), but weak matches on faded memories drop out.
 
 Selected memories are then packed under a hard token budget with a greedy
-density heuristic (score per token) — the direct answer to the track brief's
+density heuristic (score per token), the direct answer to the track brief's
 "recalling critical memories within limited context windows".
 """
 
@@ -47,7 +47,7 @@ class RecalledMemory:
 
 
 def approx_tokens(text: str) -> int:
-    """Cheap token estimate (~4 chars/token) — good enough for budgeting."""
+    """Cheap token estimate (~4 chars/token), good enough for budgeting."""
     return max(1, len(text) // 4)
 
 
@@ -126,7 +126,7 @@ def pack_budget(
     min_score: float = 0.08,
 ) -> list[RecalledMemory]:
     """Greedy knapsack by score density (score per token). If nothing fits the
-    budget outright, fall back to the single best memory, truncated to fit —
+    budget outright, fall back to the single best memory, truncated to fit;
     the agent should never go in blind when a strong memory exists."""
     viable = sorted(
         (c for c in candidates if c.score >= min_score),

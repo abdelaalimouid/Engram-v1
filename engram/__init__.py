@@ -1,4 +1,4 @@
-"""Engram — a cognitive memory engine for agents, built on Qwen Cloud.
+"""Engram: a cognitive memory engine for agents, built on Qwen Cloud.
 
 Memories decay along forgetting curves, strengthen when recalled, consolidate
 into semantic beliefs during sleep cycles, and are packed into strict token

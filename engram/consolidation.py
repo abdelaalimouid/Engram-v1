@@ -4,7 +4,7 @@ Two mechanisms:
 
 1. Perception (per turn, cheap):  a single qwen-flash call scores importance,
    extracts entities, and distils candidate facts from a user turn. Facts are
-   integrated into the belief ledger with contradiction handling — when a new
+   integrated into the belief ledger with contradiction handling. When a new
    fact collides with a currently-held belief on the same (subject, predicate),
    qwen-flash adjudicates: supersede, coexist, or discard. Superseding is
    bi-temporal: the old belief keeps its validity interval and provenance.
@@ -39,7 +39,7 @@ Rules:
 hobbies, skills, relationships, situations, decisions), NOT transient chit-chat.
 - Use "user" as subject for facts about the speaker.
 - If the speaker introduces themselves, ALWAYS record {"subject": "user", "predicate": \
-"is named", "object": "<name>"} — identity facts are the most durable of all.
+"is named", "object": "<name>"}; identity facts are the most durable of all.
 - Keep predicates short and canonical (e.g. "lives in", "is allergic to", \
 "works on", "prefers", "dislikes", "has deadline").
 - Return {"importance": 0.1, "entities": [], "facts": []} for small talk.

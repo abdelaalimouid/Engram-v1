@@ -40,7 +40,7 @@ Grading rules:
 
 
 class StatelessBaseline:
-    """Same model, no memory engine. Each session starts from a blank context —
+    """Same model, no memory engine. Each session starts from a blank context,
     which is exactly what a plain chatbot has across sessions."""
 
     def __init__(self) -> None:
@@ -89,7 +89,7 @@ def run_engram() -> dict:
               f"{report['summaries_created']} summaries")
 
     store.timewarp(SESSIONS[2]["gap_hours_before"])
-    print(f"  ⏩ timewarp +{SESSIONS[2]['gap_hours_before'] / 24:.0f} days — quiz session")
+    print(f"  ⏩ timewarp +{SESSIONS[2]['gap_hours_before'] / 24:.0f} days, quiz session")
 
     results = []
     for item in QUESTIONS:
@@ -150,9 +150,9 @@ def main() -> None:
     print(f"{'':24}{'Engram':>12}{'Baseline':>12}")
     print(f"{'Cross-session recall':<24}{engram_score:>9}/{total}{baseline_score:>9}/{total}")
     print(f"{'Accuracy':<24}{engram_score / total:>11.0%}{baseline_score / total:>12.0%}")
-    print(f"{'Avg memory ctx (tok)':<24}{mean_memory_tokens:>12.0f}{'—':>12}")
+    print(f"{'Avg memory ctx (tok)':<24}{mean_memory_tokens:>12.0f}{'-':>12}")
     print(f"{'Belief supersessions':<24}"
-          f"{engram_report['store_stats']['beliefs_superseded']:>12}{'—':>12}")
+          f"{engram_report['store_stats']['beliefs_superseded']:>12}{'-':>12}")
     print("=" * 64)
     print(f"Total wall time: {time.time() - started:.0f}s")
 

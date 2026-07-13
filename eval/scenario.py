@@ -15,7 +15,7 @@ SESSIONS = [
             "Hi! I'm Dana. I work as a marine biologist at the Azores Deep Sea Institute.",
             "Quick heads up for any future dinner plans: I'm severely allergic to shellfish.",
             "I'm currently living in Lisbon, in the Alfama district. Love it here.",
-            "My main project right now is tagging sperm whales with acoustic sensors — we call it Project ECHO.",
+            "My main project right now is tagging sperm whales with acoustic sensors, we call it Project ECHO.",
             "My daughter Mira just turned 6, she's obsessed with octopuses.",
             "Oh and I hate video calls before 10am, I'm useless in the morning.",
         ],
@@ -24,7 +24,7 @@ SESSIONS = [
         "id": "eval-s2",
         "gap_hours_before": 24 * 21,  # three weeks later
         "turns": [
-            "Big news since we last talked — I moved! I'm in Ponta Delgada now, right next to the institute.",
+            "Big news since we last talked: I moved! I'm in Ponta Delgada now, right next to the institute.",
             "Project ECHO got renamed to Project ABYSS after the funding round. Same whales, bigger budget.",
             "The weather here is wild today, rained three times before lunch.",
             "I picked up freediving as a hobby, already down to 20 meters.",
@@ -44,7 +44,7 @@ QUESTIONS = [
         "expected": "Dana; marine biologist at the Azores Deep Sea Institute",
     },
     {
-        "question": "You're helping me book a team dinner — anything about my diet you should flag?",
+        "question": "You're helping me book a team dinner, anything about my diet you should flag?",
         "expected": "severe shellfish allergy",
     },
     {

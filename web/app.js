@@ -1,4 +1,4 @@
-/* Engram UI — chat plus live memory inspector. */
+/* Engram UI: chat plus live memory inspector. */
 
 const $ = (id) => document.getElementById(id);
 const chatLog = $("chat-log");
@@ -232,7 +232,7 @@ $("btn-new-session").addEventListener("click", () => {
   const current = $("session").value.match(/(\d+)$/);
   const next = current ? Number(current[1]) + 1 : 2;
   $("session").value = `session-${next}`;
-  addMsg("toast", `— new session started: session-${next} (working memory cleared, long-term memory persists) —`);
+  addMsg("toast", `new session started: session-${next} (working memory cleared, long-term memory persists)`);
 });
 
 async function warp(hours) {
@@ -241,7 +241,7 @@ async function warp(hours) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ hours }),
   });
-  addMsg("toast", `⏩ simulated clock advanced ${hours / 24} days (total ${fmtClock(result.total_offset_hours)}) — watch retention decay`);
+  addMsg("toast", `⏩ simulated clock advanced ${hours / 24} days (total ${fmtClock(result.total_offset_hours)}), watch retention decay`);
   refreshAll();
   switchTab("episodes");
 }
@@ -250,7 +250,7 @@ $("btn-warp-week").addEventListener("click", () => warp(24 * 7));
 $("btn-warp-month").addEventListener("click", () => warp(24 * 30));
 
 $("btn-sleep").addEventListener("click", async () => {
-  addMsg("toast", "☾ running sleep cycle — consolidating faded episodes…");
+  addMsg("toast", "☾ running sleep cycle, consolidating faded episodes…");
   const report = await api("/api/consolidate", { method: "POST" });
   addMsg("toast", `☾ sleep cycle done: ${report.episodes_archived} episodes → ${report.summaries_created} summaries (${report.faded_candidates} faded candidates)`);
   refreshAll();
