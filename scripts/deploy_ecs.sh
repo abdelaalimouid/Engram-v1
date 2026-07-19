@@ -35,8 +35,12 @@ if [ ! -f .env ]; then
   echo "==> Wrote .env"
 fi
 
-# Public IP for the "open it in a browser" step.
-PUBIP="$(curl -fsSL https://100.100.100.200/latest/meta-data/eipv4 2>/dev/null || curl -fsSL ifconfig.me 2>/dev/null || echo '<your-ecs-public-ip>')"
+# Public IP for the "open it in a browser" step. Alibaba Cloud's instance
+# metadata service is HTTP-only at 100.100.100.200; try EIP, then the regular
+# public IP, then a public echo service as a last resort.
+PUBIP="$(curl -fsSL http://100.100.100.200/latest/meta-data/eipv4 2>/dev/null \
+        || curl -fsSL http://100.100.100.200/latest/meta-data/public-ipv4 2>/dev/null \
+        || curl -fsSL ifconfig.me 2>/dev/null || echo '<your-ecs-public-ip>')"
 
 echo
 echo "======================================================================"
