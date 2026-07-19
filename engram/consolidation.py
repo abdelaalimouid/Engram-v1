@@ -44,6 +44,8 @@ hobbies, skills, relationships, situations, decisions), NOT transient chit-chat.
 "is named", "object": "<name>"}; identity facts are the most durable of all.
 - Keep predicates short and canonical (e.g. "lives in", "is allergic to", \
 "works on", "prefers", "dislikes", "has deadline").
+- Never guess. If you do not know the object of a fact, omit that fact entirely; \
+do NOT emit placeholders like "unknown", "unspecified", "n/a", or "none".
 - Return {"importance": 0.1, "entities": [], "facts": []} for small talk.
 - JSON only, no commentary."""
 
@@ -67,6 +69,15 @@ useful information about the user and drops filler. Return only the summary text
 
 Memories:
 {block}"""
+
+
+# Degenerate values the extractor sometimes emits when it has nothing concrete;
+# a fact containing any of these is dropped rather than stored.
+PLACEHOLDER_VALUES = {
+    "", "unknown", "unclear", "unspecified", "undefined", "n/a", "na", "none",
+    "null", "tbd", "not specified", "not sure", "unsure", "?", "something",
+    "someone", "somewhere", "nothing",
+}
 
 
 def perceive(text: str) -> dict[str, Any]:
@@ -101,6 +112,12 @@ def integrate_fact(
     confidence = min(max(float(fact.get("confidence", 0.7)), 0.0), 1.0)
     if not subject or not predicate or not obj:
         return {"action": "skipped", "reason": "incomplete triple"}
+    if (
+        subject.lower() in PLACEHOLDER_VALUES
+        or predicate.lower() in PLACEHOLDER_VALUES
+        or obj.lower() in PLACEHOLDER_VALUES
+    ):
+        return {"action": "skipped", "reason": "placeholder value"}
 
     same_pred = store.current_beliefs_for(subject, predicate)
     statement = f"{subject} {predicate} {obj}"
