@@ -31,7 +31,8 @@ The benchmark compares two agents that use the identical Qwen model. The only di
 | | Engram | Stateless baseline |
 |---|---|---|
 | Cross-session recall | 7/7 (100%) | 0/7 (0%) |
-| Avg memory context per question | 318 tokens (budget: 1,200) | n/a |
+| Avg memory context per question | 276 tokens (budget: 1,200) | n/a |
+| Belief supersessions during the run | 12 | n/a |
 
 Reproduce it with `python -m eval.run_eval`. A recorded run is committed at [`eval/sample_results.json`](eval/sample_results.json) and [`eval/sample_eval_output.txt`](eval/sample_eval_output.txt).
 
