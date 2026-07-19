@@ -1,0 +1,23 @@
+# Render.com blueprint - free public deploy of the Engram backend + web UI.
+#
+# Deploy steps:
+#   1. Push this file (already in the repo).
+#   2. Go to https://render.com -> New -> Blueprint -> connect this GitHub repo.
+#   3. Render reads this file and creates the service.
+#   4. In the service's Environment tab, set DASHSCOPE_API_KEY to your Qwen key.
+#      (It is marked sync:false here so the key is NEVER stored in the repo.)
+#   5. Deploy. Your public URL will be https://engram-XXXX.onrender.com
+#
+# Note: the free plan sleeps after ~15 min idle; the first request cold-starts.
+services:
+  - type: web
+    name: engram
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn engram.server:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DASHSCOPE_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.11.9"
