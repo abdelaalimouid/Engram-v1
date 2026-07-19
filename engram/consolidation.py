@@ -22,6 +22,8 @@ import time
 from collections import defaultdict
 from typing import Any
 
+import numpy as np
+
 from . import config, forgetting, qwen_cloud
 from .store import Episode, MemoryStore
 
@@ -46,15 +48,17 @@ hobbies, skills, relationships, situations, decisions), NOT transient chit-chat.
 - JSON only, no commentary."""
 
 ADJUDICATE_PROMPT = """You are the belief-revision module of a memory system. An agent holds a \
-current belief and has just learned a new fact with the same subject and predicate.
+current belief about a subject and has just learned a new fact about the same subject. They may \
+concern the same attribute or closely related ones.
 
 Current belief: "{old}"  (learned {age_days:.1f} days ago)
 New fact:       "{new}"
 
 Decide and return strict JSON: {{"action": "supersede" | "coexist" | "discard_new", "reason": "<short>"}}
-- "supersede": the new fact replaces the old (state changed over time, or correction).
-- "coexist": both can be true simultaneously (e.g. multiple hobbies).
-- "discard_new": the new fact is redundant or clearly less reliable.
+- "supersede": the new fact updates or replaces the old one (e.g. the subject's location, job, or \
+project name changed over time, or the new fact corrects the old).
+- "coexist": both can be true at the same time (e.g. two different hobbies, or unrelated facts).
+- "discard_new": the new fact is redundant or clearly less reliable than the old.
 JSON only."""
 
 SUMMARIZE_PROMPT = """You are the consolidation module of a memory system. Compress these fading \
@@ -98,46 +102,72 @@ def integrate_fact(
     if not subject or not predicate or not obj:
         return {"action": "skipped", "reason": "incomplete triple"}
 
-    existing = store.current_beliefs_for(subject, predicate)
+    same_pred = store.current_beliefs_for(subject, predicate)
     statement = f"{subject} {predicate} {obj}"
 
     # Exact duplicate: reinforce instead of duplicating.
-    for belief in existing:
+    for belief in same_pred:
         if belief.object.strip().lower() == obj.lower():
             store.boost_belief_confidence(belief.id, max(belief.confidence, confidence) + 0.05)
             store.log_event("belief_reinforced", {"belief": statement, "id": belief.id})
             return {"action": "reinforced", "belief_id": belief.id, "statement": statement}
 
     embedding = qwen_cloud.embed_one(statement)
+
+    # Candidates for contradiction handling: beliefs on the same (subject,
+    # predicate), plus semantically-close beliefs about the same subject under a
+    # different predicate, so "moved to Berlin" can supersede "lives in Lisbon",
+    # not just an exact-predicate rewrite. The model makes the final call below.
+    candidates: dict[str, Any] = {b.id: b for b in same_pred}
+    for belief in _related_beliefs(store, subject, predicate, embedding):
+        candidates.setdefault(belief.id, belief)
+
     new_belief = store.add_belief(
         subject, predicate, obj, confidence, source_episode,
         stability=forgetting.initial_stability(confidence),
         embedding=embedding,
     )
 
-    # Contradiction: same (subject, predicate), different object -> adjudicate.
     outcomes = []
-    for belief in existing:
+    for belief in candidates.values():
         verdict = _adjudicate(store, belief.statement(), statement, belief.created_at)
-        if verdict["action"] == "supersede":
+        action = verdict["action"]
+        if action == "supersede":
             store.supersede_belief(belief.id, new_belief.id)
             store.log_event(
                 "belief_superseded",
                 {"old": belief.statement(), "new": statement, "reason": verdict.get("reason", "")},
             )
-        elif verdict["action"] == "discard_new":
+        elif action == "discard_new":
             store.supersede_belief(new_belief.id, belief.id)
             store.log_event(
                 "belief_discarded",
                 {"discarded": statement, "kept": belief.statement(), "reason": verdict.get("reason", "")},
             )
+            outcomes.append(action)
+            break  # the new belief is now invalidated; stop adjudicating.
         else:
             store.log_event("belief_coexists", {"a": belief.statement(), "b": statement})
-        outcomes.append(verdict["action"])
+        outcomes.append(action)
 
-    if not existing:
+    if not candidates:
         store.log_event("belief_learned", {"belief": statement, "id": new_belief.id})
     return {"action": outcomes[0] if outcomes else "learned", "belief_id": new_belief.id, "statement": statement}
+
+
+def _related_beliefs(
+    store: MemoryStore, subject: str, predicate: str, embedding: np.ndarray
+) -> list[Any]:
+    """Current beliefs about the same subject under a *different* predicate whose
+    embedding is close enough to the incoming statement to be a possible
+    contradiction. Same-predicate beliefs are handled separately."""
+    related = []
+    for belief in store.current_beliefs_for_subject(subject):
+        if belief.predicate.lower() == predicate.lower() or belief.embedding is None:
+            continue
+        if float(np.dot(belief.embedding, embedding)) >= config.BELIEF_CONTRADICTION_SIM:
+            related.append(belief)
+    return related
 
 
 def _adjudicate(store: MemoryStore, old: str, new: str, old_created: float) -> dict[str, Any]:

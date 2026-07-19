@@ -290,6 +290,14 @@ class MemoryStore:
         ).fetchall()
         return [self._row_to_belief(row) for row in rows]
 
+    def current_beliefs_for_subject(self, subject: str) -> list[Belief]:
+        """Every currently-held belief about a subject, across all predicates."""
+        rows = self.conn.execute(
+            "SELECT * FROM beliefs WHERE valid_to IS NULL AND lower(subject)=lower(?)",
+            (subject,),
+        ).fetchall()
+        return [self._row_to_belief(row) for row in rows]
+
     def _row_to_belief(self, row: sqlite3.Row) -> Belief:
         return Belief(
             id=row["id"], subject=row["subject"], predicate=row["predicate"],

@@ -48,6 +48,12 @@ MEMORY_TOKEN_BUDGET = int(os.environ.get("MEMORY_TOKEN_BUDGET", "1200"))
 WORKING_MEMORY_TURNS = int(os.environ.get("WORKING_MEMORY_TURNS", "12"))
 CONSOLIDATE_EVERY_N_TURNS = int(os.environ.get("CONSOLIDATE_EVERY_N_TURNS", "16"))
 
+# Cosine-similarity threshold for spotting a contradiction between an incoming
+# fact and an existing belief about the same subject under a *different*
+# predicate (e.g. "moved to Berlin" vs "lives in Lisbon"). The model still makes
+# the final supersede/coexist call; this only decides which beliefs to check.
+BELIEF_CONTRADICTION_SIM = float(os.environ.get("BELIEF_CONTRADICTION_SIM", "0.5"))
+
 # Retention below this marks an episode as a compression candidate.
 COMPRESSION_RETENTION_THRESHOLD = float(
     os.environ.get("COMPRESSION_RETENTION_THRESHOLD", "0.25")

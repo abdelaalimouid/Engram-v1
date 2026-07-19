@@ -41,6 +41,20 @@ def test_current_beliefs_lookup_case_insensitive(store):
     assert len(store.current_beliefs_for("user", "prefers")) == 1
 
 
+def test_current_beliefs_for_subject_spans_predicates(store):
+    store.add_belief("user", "lives in", "Lisbon", 0.9, None, 48.0, vec())
+    store.add_belief("user", "is allergic to", "shellfish", 0.9, None, 48.0, vec())
+    superseded = store.add_belief("user", "works on", "ECHO", 0.9, None, 48.0, vec())
+    replacement = store.add_belief("user", "works on", "ABYSS", 0.9, None, 48.0, vec())
+    store.supersede_belief(superseded.id, replacement.id)
+
+    subjects = store.current_beliefs_for_subject("user")
+    predicates = sorted(b.predicate for b in subjects)
+    # all current predicates for the subject, across predicates, superseded excluded
+    assert predicates == ["is allergic to", "lives in", "works on"]
+    assert all(b.valid_to is None for b in subjects)
+
+
 def test_timewarp_moves_clock(store):
     before = store.now()
     store.timewarp(24.0)
