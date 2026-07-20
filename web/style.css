@@ -113,6 +113,12 @@ main {
 
 .msg.user { align-self: flex-end; background: #262015; border: 1px solid #3a3120; color: var(--cream); }
 .msg.assistant { align-self: flex-start; background: var(--ink-2); border: 1px solid var(--line); white-space: pre-wrap; }
+.msg.assistant strong { color: var(--cream); font-weight: 600; }
+.msg.assistant em { font-style: italic; }
+.msg.assistant code {
+  font-family: var(--mono); font-size: 12.5px; color: var(--amber);
+  background: var(--ink-3); padding: 1px 5px; border-radius: 3px;
+}
 .msg.assistant::before {
   content: "engram"; display: block; font-size: 10px; letter-spacing: .16em;
   text-transform: uppercase; color: var(--amber-dim); margin-bottom: 6px;

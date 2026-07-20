@@ -37,6 +37,16 @@ function esc(text) {
   return div.innerHTML;
 }
 
+// Minimal, safe inline markdown for assistant replies: HTML-escape first (so
+// model output can never inject markup), then format **bold**, *italic*, `code`.
+function renderMarkdown(text) {
+  let html = esc(text);
+  html = html.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+  html = html.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+  return html;
+}
+
 function retentionColor(retention) {
   if (retention > 0.6) return "var(--amber)";
   if (retention > 0.25) return "var(--amber-dim)";
@@ -202,7 +212,7 @@ form.addEventListener("submit", async (event) => {
       body: JSON.stringify({ session_id: $("session").value.trim() || "default", message }),
     });
     pending.classList.remove("thinking");
-    pending.textContent = result.reply;
+    pending.innerHTML = renderMarkdown(result.reply);
     renderRecall(result.recall_trace, result.memory_tokens_used, result.memory_token_budget);
     switchTab("recall");
     if (result.sleep_report) {
